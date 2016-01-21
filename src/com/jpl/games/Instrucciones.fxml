@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.jpl.games.InstruccionesController">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0">
+         <image>
+            <Image url="@../../../imagenes/Rubik_Cube_Iced_by_Macterror.jpg" />
+         </image>
+      </ImageView>
+      <TextArea editable="false" layoutX="21.0" layoutY="21.0" opacity="0.56" prefHeight="360.0" prefWidth="566.0" text="Cómo resolver un cubo de Rubik&#10;&#10;1 Selecciona una esquina del cubo que servirá de punto de partida. Gira el cubo hasta que ese punto se encuentre con la cara blanca en el frente, la cara roja a la derecha y la cara azul arriba. Luego, gira el cubo hasta que el cara central superior también sea azul.&#10;&#10;2 Gira todo el cubo hacia la izquierda hasta que el cubo original se encuentre en la esquina superior izquierda. Ahora, gíralo para que la nueva esquina superior derecha sea nuevamente azul en la parte superior, con rojo en la misma cara al igual que la ubicación del rojo en la sección anterior.&#10;3 Repite el procedimiento anterior para cada una de las otras esquinas. En ese momento, deberá aparecer una &quot;X&quot; azul en la parte superior del cubo de Rubik y todos los otros colores de las esquinas deben ser los mismos que aquéllos ubicados de manera horizontal.&#10;&#10;4 Termina con la parte superior. Procede a buscar los cubos necesarios en los bordes específicos y guíalos a sus nuevas posiciones. Para lograr esto, gira la capa inferior y la capa central hasta que los cubos específicos giren hasta alcanzar la posición requerida. Una vez finalizado este proceso, toda la capa superior debe ser azul.&#10;&#10;5 Gira la capa central hasta que las capas del medio coincidan con la capa horizontal en la parte superior del cubo, efectivamente logrando formas de &quot;T&quot; en las subcapas del cubo de Rubik. Finalizado este paso, será necesario una vez más girar el cubo para ubicar los bordes como se hizo con anterioridad para la capa superior azul del cubo.&#10;&#10;6 Gira la fila inferior para que combine con el color. Esto dará como resultado una forma de &quot;T&quot; más grande en dicha cara del cubo de Rubik. Continúa girándolo como se detalla con anterioridad hasta que las filas superiores y centrales se encuentren completamente resueltas.&#10;&#10;7 Da vuelta el cubo para que el lado azul resuelto del cubo se convierta en la parte inferior en lugar de la parte superior. Ahora es momento de ordenar la última parte sin resolver del cubo de Rubik. Nuevamente, comienza por resolver las esquinas y sigue los pasos de todo el proceso conforme se detalla con anterioridad.&#10;&#10;8 Continúa utilizando los métodos detallados previamente para terminar de resolver los lados restantes de este juego. Esto probablemente requerirá tiempo y esfuerzo." wrapText="true" />
+   </children>
+</AnchorPane>

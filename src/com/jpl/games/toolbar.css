@@ -1,0 +1,77 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 27/11/2015, 16:17:16
+    Author     : Administrador
+*/
+
+#tool-bar {
+   
+
+    -fx-base: -dark-black;
+    -fx-font-size: 12pt;
+    -fx-font-fill: white;
+
+    -fx-background-color:
+        /*linear-gradient(to bottom, derive(-fx-base,-10%), derive(-fx-base,-20%)) ;
+       linear-gradient(#232723, -light-black 0%, -dark-black 50%);
+        linear-gradient(to bottom, -fx-base, derive(-fx-base,30%));
+        
+       linear-gradient(#2f4066 25%,#293758 55%,#354873 25%,#4e6aa9 10% );*/
+    linear-gradient(#686868 0%, #232723 25%, #373837 75%);
+    -fx-background-insets: 1, 0 0 1 0;
+    -fx-padding: .2em 0.416667em .2em 0.416667em;
+    -fx-effect: dropshadow(two-pass-box,black,5,.2,1,0); 
+    
+}
+#my-toolbar {
+   
+
+    -fx-base: -dark-black;
+    -fx-font-size: 12pt;
+    -fx-text-fill: white;
+    -fx-background-image:  url(\"/imagenes/fondo-vectorial4.jpg\");
+        /*linear-gradient(to bottom, derive(-fx-base,-10%), derive(-fx-base,-20%)) ;*/
+       /*linear-gradient(#232723, -light-black 0%, -dark-black 50%);
+        linear-gradient(to bottom, -fx-base, derive(-fx-base,30%));
+       linear-gradient(to right,#686868 0%, #232723 25%, #373837 75%);
+
+    -fx-background-insets: 1, 0 0 1 0;
+    -fx-padding: .2em 0.416667em .2em 0.416667em;
+    -fx-effect: dropshadow(two-pass-box,black,5,.2,0,0); */
+    
+}
+
+
+
+
+
+/*#segmented-button-bar .button {
+    -fx-background-color:
+        -darkest-black,
+        -dark-highlight,
+        linear-gradient(to bottom, -light-black 2%, -dark-black 98%);
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
+    -fx-background-radius: 0;
+    -fx-padding: 0.4em 1.833333em 0.4em 1.833333em;
+}
+ 
+#segmented-button-bar .button.first {
+    -fx-background-insets: 0, 1, 2 1 1 1;
+    -fx-background-radius: 3 0 0 3, 2 0 0 2, 2 0 0 2;
+}
+ 
+#segmented-button-bar .button.last {
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
+    -fx-background-radius: 0 3 3 0, 0 2 2 0, 0 2 2 0;
+}
+ 
+#segmented-button-bar .button:pressed {
+    -fx-background-color:
+        -darkest-black,
+        rgb(55, 57, 58),
+        linear-gradient(to top, -light-black 2%, -dark-black 98%);
+*/

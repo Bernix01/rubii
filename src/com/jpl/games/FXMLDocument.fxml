@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.net.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jpl.games.FXMLDocumentController">
+   <children>
+      <ImageView fitHeight="440.0" fitWidth="647.0">
+         <image>
+            <Image url="@../../../imagenes/Rubik_Cube_Iced_by_Macterror.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="btstart" layoutX="451.0" layoutY="38.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="135.0" styleClass="dark-blue" stylesheets="@estilos.css" text="START">
+         <cursor>
+             <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btinstruc" layoutX="451.0" layoutY="91.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="135.0" styleClass="dark-blue" stylesheets="@estilos.css" text="INSTRUCTIONS">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+      <Button fx:id="btRanking" layoutX="451.0" layoutY="150.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="135.0" styleClass="dark-blue" stylesheets="@estilos.css" text="RANKING">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>
