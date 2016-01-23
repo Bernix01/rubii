@@ -30,7 +30,7 @@ public class Server {
     public static void main(String[] args) throws Exception {
         System.out.println("Server starting... ");
         startRegisstry();
-        registerObject(RemoteImpl.class.getSimpleName(), new RemoteImpl());
+        registerObject("Minion", new RemoteImpl());
         System.out.println("Server started!");
     }
 }

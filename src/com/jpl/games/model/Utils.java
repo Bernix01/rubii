@@ -299,7 +299,7 @@ public class Utils {
     }
     
     public static boolean checkSolution(List<Integer> order) {
-        JOptionPane.showMessageDialog(null, order);
+        
         return Utils.getOrientations().parallelStream()
                 .filter(r->Utils.checkOrientation(r,order)).findAny().isPresent();
     }
