@@ -385,6 +385,7 @@ public class RubikFX extends Application {
         timer.setCycleCount(Animation.INDEFINITE);
         rubik.isSolved().addListener((ov, b, b1) -> {
             if (b1) {
+                lSolved.setTextFill(Color.WHITE);
                 lSolved.setVisible(true);
                 timer.stop();
                 moves.setTimePlay(LocalTime.now().minusNanos(time.toNanoOfDay()).toNanoOfDay());
@@ -421,7 +422,7 @@ public class RubikFX extends Application {
             }
         });
 
-        final Scene scene = new Scene(pane, 1200, 680, true);
+        final Scene scene = new Scene(pane, 1200, 780, true);
         pane.prefWidthProperty().bind(scene.widthProperty());
         pane.prefWidthProperty().bind(scene.heightProperty());
 

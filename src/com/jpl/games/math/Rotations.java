@@ -53,9 +53,9 @@ public class Rotations {
                 System.arraycopy(cube[f][l], 0, tempCube[f][l], 0, 3);
             }
         }
-        
+
         for (int i = 0; i < 6; i++) {
-           System.arraycopy(colors[i], 0, tempColors[i], 0, 9);
+            System.arraycopy(colors[i], 0, tempColors[i], 0, 9);
         }
     }
 
@@ -71,12 +71,13 @@ public class Rotations {
         }
         return newArray;
     }
-    
-    public List<Integer> getColors(){
+
+    public List<Integer> getColors() {
         List<Integer> colorss = new ArrayList<>(54);
         for (int i = 0; i < 6; i++) {
-            for(int j = 0; j<9;j++)
+            for (int j = 0; j < 9; j++) {
                 colorss.add(colors[i][j]);
+            }
         }
         return colorss;
     }
@@ -91,17 +92,17 @@ public class Rotations {
                 }
             }
         }
-        
+
         for (int i = 1; i < 7; i++) {
             for (int j = 0; j < 9; j++) {
-                colors[i-1][j] = i;
-                tempColors[i-1][j] = i;
+                colors[i - 1][j] = i;
+                tempColors[i - 1][j] = i;
             }
-            
+
         }
     }
-    
-    public int[][] getCubee(){
+
+    public int[][] getCubee() {
         return colors;
     }
 
@@ -113,7 +114,7 @@ public class Rotations {
             }
         }
         for (int i = 0; i < 6; i++) {
-           System.arraycopy(tempColors[i], 0, colors[i], 0, 9);
+            System.arraycopy(tempColors[i], 0, colors[i], 0, 9);
         }
     }
 
@@ -223,8 +224,7 @@ public class Rotations {
         }
         handleColors(rot);
         save();
-        
-        
+
     }
 
     private void handleColors(String rot) {
@@ -236,18 +236,18 @@ public class Rotations {
 
         switch (rot) {
             case "L":
-                cycle(5);
+                cycle(4);
                 break;
             case "Li":
-                cycle(5, true);
+                cycle(4, true);
                 break;
             //case "M":  tempCube[x][t][1] = cube[y][x][1]; break;
             //case "Mi": tempCube[t][x][1] = cube[x][y][1]; break;
             case "R":
-                cycle(3);
+                cycle(1);
                 break;
             case "Ri":
-                cycle(3, true);
+                cycle(1, true);
                 break;
             case "U":
                 cycle(0);
@@ -258,10 +258,10 @@ public class Rotations {
             //case "E":  tempCube[x][1][t] = cube[y][1][x]; break;
             //case "Ei": tempCube[t][1][x] = cube[x][1][y]; break;
             case "D":
-                cycle(1);
+                cycle(3);
                 break;
             case "Di":
-                cycle(1, true);
+                cycle(3, true);
                 break;
             case "F":
                 cycle(2);
@@ -272,10 +272,10 @@ public class Rotations {
             //case "S":  tempCube[1][x][t] = cube[1][y][x]; break;
             //case "Si": tempCube[1][t][x] = cube[1][x][y]; break;
             case "B":
-                cycle(4);
+                cycle(5);
                 break;
             case "Bi":
-                cycle(4, true);
+                cycle(5, true);
                 break;
         }
 
@@ -310,224 +310,220 @@ public class Rotations {
 
     private void rotBand(String rot) {
         switch (rot) {
-            case "L":
-                tempColors[2][0] = colors[0][0];
-                tempColors[2][3] = colors[0][3];
-                tempColors[2][6] = colors[0][6];
-
-                tempColors[0][0] = colors[4][0];
-                tempColors[0][3] = colors[4][3];
-                tempColors[0][6] = colors[4][6];
-
-                tempColors[4][0] = colors[1][0];
-                tempColors[4][3] = colors[1][3];
-                tempColors[4][6] = colors[1][6];
-
-                tempColors[1][0] = colors[2][0];
-                tempColors[1][3] = colors[2][3];
-                tempColors[1][6] = colors[2][6];
-
-                break;
             case "Li":
                 tempColors[0][0] = colors[2][0];
                 tempColors[0][3] = colors[2][3];
                 tempColors[0][6] = colors[2][6];
 
-                tempColors[4][0] = colors[0][0];
-                tempColors[4][3] = colors[0][3];
-                tempColors[4][6] = colors[0][6];
+                tempColors[2][0] = colors[3][0];
+                tempColors[2][3] = colors[3][3];
+                tempColors[2][6] = colors[3][6];
 
-                tempColors[1][0] = colors[4][0];
-                tempColors[1][3] = colors[4][3];
-                tempColors[1][6] = colors[4][6];
+                tempColors[3][6] = colors[5][2];
+                tempColors[3][3] = colors[5][5];
+                tempColors[3][0] = colors[5][8];
 
-                tempColors[2][0] = colors[1][0];
-                tempColors[2][3] = colors[1][3];
-                tempColors[2][6] = colors[1][6];
+                tempColors[5][2] = colors[0][6];
+                tempColors[5][5] = colors[0][3];
+                tempColors[5][8] = colors[0][0];
+
+                break;
+            case "L":
+                tempColors[2][0] = colors[0][0];
+                tempColors[2][3] = colors[0][3];
+                tempColors[2][6] = colors[0][6];
+
+                tempColors[3][0] = colors[2][0];
+                tempColors[3][3] = colors[2][3];
+                tempColors[3][6] = colors[2][6];
+
+                tempColors[5][2] = colors[3][6];
+                tempColors[5][5] = colors[3][3];
+                tempColors[5][8] = colors[3][0];
+
+                tempColors[0][6] = colors[5][2];
+                tempColors[0][3] = colors[5][5];
+                tempColors[0][0] = colors[5][8];
                 break;
             //case "M":  tempCube[x][t][1] = cube[y][x][1]; break;
             //case "Mi": tempCube[t][x][1] = cube[x][y][1]; break;
+            case "R":
+                tempColors[0][2] = colors[2][2];
+                tempColors[0][5] = colors[2][5];
+                tempColors[0][8] = colors[2][8];
+
+                tempColors[2][2] = colors[3][2];
+                tempColors[2][5] = colors[3][5];
+                tempColors[2][8] = colors[3][8];
+
+                tempColors[3][2] = colors[5][6];
+                tempColors[3][5] = colors[5][3];
+                tempColors[3][8] = colors[5][0];
+
+                tempColors[5][0] = colors[0][8];
+                tempColors[5][3] = colors[0][5];
+                tempColors[5][6] = colors[0][2];
+                break;
             case "Ri":
                 tempColors[2][2] = colors[0][2];
                 tempColors[2][5] = colors[0][5];
                 tempColors[2][8] = colors[0][8];
 
-                tempColors[1][2] = colors[2][2];
-                tempColors[1][5] = colors[2][5];
-                tempColors[1][8] = colors[2][8];
+                tempColors[3][2] = colors[2][2];
+                tempColors[3][5] = colors[2][5];
+                tempColors[3][8] = colors[2][8];
 
-                tempColors[4][2] = colors[1][2];
-                tempColors[4][5] = colors[1][5];
-                tempColors[4][8] = colors[1][8];
+                tempColors[5][6] = colors[3][2];
+                tempColors[5][3] = colors[3][5];
+                tempColors[5][0] = colors[3][8];
 
-                tempColors[0][2] = colors[4][2];
-                tempColors[0][5] = colors[4][5];
-                tempColors[0][8] = colors[4][8];
-                break;
-            case "R":
-                tempColors[2][2] = colors[1][2];
-                tempColors[2][5] = colors[1][5];
-                tempColors[2][8] = colors[1][8];
-
-                tempColors[1][2] = colors[4][2];
-                tempColors[1][5] = colors[4][5];
-                tempColors[1][8] = colors[4][8];
-
-                tempColors[4][2] = colors[0][2];
-                tempColors[4][5] = colors[0][5];
-                tempColors[4][8] = colors[0][8];
-
-                tempColors[0][2] = colors[2][2];
-                tempColors[0][5] = colors[2][5];
-                tempColors[0][8] = colors[2][8];
+                tempColors[0][8] = colors[5][0];
+                tempColors[0][5] = colors[5][3];
+                tempColors[0][2] = colors[5][6];
                 break;
             case "U":
-                tempColors[5][2] = colors[2][0];
-                tempColors[5][5] = colors[2][1];
-                tempColors[5][8] = colors[2][2];
+                tempColors[4][0] = colors[2][0];
+                tempColors[4][1] = colors[2][1];
+                tempColors[4][2] = colors[2][2];
 
-                tempColors[4][8] = colors[5][2];
-                tempColors[4][7] = colors[5][5];
-                tempColors[4][6] = colors[5][8];
+                tempColors[2][0] = colors[1][0];
+                tempColors[2][1] = colors[1][1];
+                tempColors[2][2] = colors[1][2];
 
-                tempColors[3][0] = colors[4][6];
-                tempColors[3][3] = colors[4][7];
-                tempColors[3][6] = colors[4][8];
+                tempColors[1][0] = colors[5][0];
+                tempColors[1][1] = colors[5][1];
+                tempColors[1][2] = colors[5][2];
 
-                tempColors[2][2] = colors[3][0];
-                tempColors[2][1] = colors[3][3];
-                tempColors[2][0] = colors[3][6];
+                tempColors[5][0] = colors[4][0];
+                tempColors[5][1] = colors[4][1];
+                tempColors[5][2] = colors[4][2];
                 break;
             case "Ui":
-                tempColors[2][0] = colors[5][2];
-                tempColors[2][1] = colors[5][5];
-                tempColors[2][2] = colors[5][8];
+                tempColors[2][0] = colors[4][0];
+                tempColors[2][1] = colors[4][1];
+                tempColors[2][2] = colors[4][2];
 
-                tempColors[5][2] = colors[4][8];
-                tempColors[5][5] = colors[4][7];
-                tempColors[5][8] = colors[4][6];
+                tempColors[1][0] = colors[2][0];
+                tempColors[1][1] = colors[2][1];
+                tempColors[1][2] = colors[2][2];
 
-                tempColors[4][6] = colors[3][0];
-                tempColors[4][7] = colors[3][3];
-                tempColors[4][8] = colors[3][6];
+                tempColors[5][0] = colors[1][0];
+                tempColors[5][1] = colors[1][1];
+                tempColors[5][2] = colors[1][2];
 
-                tempColors[3][0] = colors[2][2];
-                tempColors[3][3] = colors[2][1];
-                tempColors[3][6] = colors[2][0];
+                tempColors[4][0] = colors[5][0];
+                tempColors[4][1] = colors[5][1];
+                tempColors[4][2] = colors[5][2];
                 break;
             case "D":
-                tempColors[5][0] = colors[2][6];
-                tempColors[5][3] = colors[2][7];
-                tempColors[5][6] = colors[2][8];
+                tempColors[2][6] = colors[4][6];
+                tempColors[2][7] = colors[4][7];
+                tempColors[2][8] = colors[4][8];
 
-                tempColors[2][6] = colors[3][8];
-                tempColors[2][7] = colors[3][5];
-                tempColors[2][8] = colors[3][2];
+                tempColors[1][6] = colors[2][6];
+                tempColors[1][7] = colors[2][7];
+                tempColors[1][8] = colors[2][8];
 
-                tempColors[3][2] = colors[4][0];
-                tempColors[3][5] = colors[4][1];
-                tempColors[3][8] = colors[4][2];
+                tempColors[5][6] = colors[1][6];
+                tempColors[5][7] = colors[1][7];
+                tempColors[5][8] = colors[1][8];
 
-                tempColors[4][0] = colors[5][6];
-                tempColors[4][1] = colors[5][3];
-                tempColors[4][2] = colors[5][0];
+                tempColors[4][6] = colors[5][6];
+                tempColors[4][7] = colors[5][7];
+                tempColors[4][8] = colors[5][8];
                 break;
 
             //case "E":  tempCube[x][1][t] = cube[y][1][x]; break;
             //case "Ei": tempCube[t][1][x] = cube[x][1][y]; break;
             case "Di":
-                tempColors[2][6] = colors[5][0];
-                tempColors[2][7] = colors[5][3];
-                tempColors[2][8] = colors[5][6];
+                tempColors[4][6] = colors[2][6];
+                tempColors[4][7] = colors[2][7];
+                tempColors[4][8] = colors[2][8];
 
-                tempColors[3][8] = colors[2][6];
-                tempColors[3][5] = colors[2][7];
-                tempColors[3][2] = colors[2][8];
+                tempColors[2][6] = colors[1][6];
+                tempColors[2][7] = colors[1][7];
+                tempColors[2][8] = colors[1][8];
 
-                tempColors[4][0] = colors[3][2];
-                tempColors[4][1] = colors[3][5];
-                tempColors[4][2] = colors[3][8];
+                tempColors[1][6] = colors[5][6];
+                tempColors[1][7] = colors[5][7];
+                tempColors[1][8] = colors[5][8];
 
-                tempColors[5][6] = colors[4][0];
-                tempColors[5][3] = colors[4][1];
-                tempColors[5][0] = colors[4][2];
+                tempColors[5][6] = colors[4][6];
+                tempColors[5][7] = colors[4][7];
+                tempColors[5][8] = colors[4][8];
                 break;
 
             case "F":
-                tempColors[0][6] = colors[5][6];
-                tempColors[0][7] = colors[5][7];
-                tempColors[0][8] = colors[5][8];
+                tempColors[4][2] = colors[3][0];
+                tempColors[4][5] = colors[3][1];
+                tempColors[4][8] = colors[3][2];
 
-                tempColors[5][6] = colors[1][2];
-                tempColors[5][7] = colors[1][1];
-                tempColors[5][8] = colors[1][0];
+                tempColors[3][0] = colors[1][6];
+                tempColors[3][1] = colors[1][3];
+                tempColors[3][2] = colors[1][0];
 
-                tempColors[1][0] = colors[3][8];
-                tempColors[1][1] = colors[3][7];
-                tempColors[1][2] = colors[3][6];
+                tempColors[1][6] = colors[0][8];
+                tempColors[1][3] = colors[0][7];
+                tempColors[1][0] = colors[0][6];
 
-                tempColors[3][8] = colors[0][8];
-                tempColors[3][7] = colors[0][7];
-                tempColors[3][6] = colors[0][6];
+                tempColors[0][8] = colors[4][2];
+                tempColors[0][7] = colors[4][5];
+                tempColors[0][6] = colors[4][8];
                 break;
             case "Fi":
-                tempColors[5][6] = colors[0][6];
-                tempColors[5][7] = colors[0][7];
-                tempColors[5][8] = colors[0][8];
+                tempColors[3][0] = colors[4][2];
+                tempColors[3][1] = colors[4][5];
+                tempColors[3][2] = colors[4][8];
 
-                tempColors[1][2] = colors[5][6];
-                tempColors[1][1] = colors[5][7];
-                tempColors[1][0] = colors[5][8];
+                tempColors[1][6] = colors[3][0];
+                tempColors[1][3] = colors[3][1];
+                tempColors[1][0] = colors[3][2];
 
-                tempColors[3][8] = colors[1][0];
-                tempColors[3][7] = colors[1][1];
-                tempColors[3][6] = colors[1][2];
+                tempColors[0][8] = colors[1][6];
+                tempColors[0][7] = colors[1][3];
+                tempColors[0][6] = colors[1][0];
 
-                tempColors[0][8] = colors[3][8];
-                tempColors[0][7] = colors[3][7];
-                tempColors[0][6] = colors[3][6];
+                tempColors[4][2] = colors[0][8];
+                tempColors[4][5] = colors[0][7];
+                tempColors[4][8] = colors[0][6];
                 break;
             //case "S":  tempCube[1][x][t] = cube[1][y][x]; break;
             //case "Si": tempCube[1][t][x] = cube[1][x][y]; break;
             case "B":
-                
-                tempColors[0][0] = colors[3][0];
-                tempColors[0][1] = colors[3][1];
-                tempColors[0][2] = colors[3][2];
+                tempColors[3][6] = colors[4][0];
+                tempColors[3][7] = colors[4][3];
+                tempColors[3][8] = colors[4][6];
 
-                tempColors[5][0] = colors[0][0];
-                tempColors[5][1] = colors[0][1];
-                tempColors[5][2] = colors[0][2];
+                tempColors[1][8] = colors[3][6];
+                tempColors[1][5] = colors[3][7];
+                tempColors[1][2] = colors[3][8];
 
-                tempColors[1][6] = colors[5][2];
-                tempColors[1][7] = colors[5][1];
-                tempColors[1][8] = colors[5][0];
+                tempColors[0][2] = colors[1][8];
+                tempColors[0][1] = colors[1][5];
+                tempColors[0][0] = colors[1][2];
 
-                tempColors[3][0] = colors[1][8];
-                tempColors[3][1] = colors[1][7];
-                tempColors[3][2] = colors[1][6];
+                tempColors[4][0] = colors[0][2];
+                tempColors[4][3] = colors[0][1];
+                tempColors[4][6] = colors[0][0];
                 break;
             case "Bi":
-                //tempCube[2][x][t] = cube[2][y][x];
-                tempColors[0][0] = colors[5][0];
-                tempColors[0][1] = colors[5][1];
-                tempColors[0][2] = colors[5][2];
+                tempColors[4][0] = colors[3][6];
+                tempColors[4][3] = colors[3][7];
+                tempColors[4][6] = colors[3][8];
 
-                tempColors[5][0] = colors[1][6];
-                tempColors[5][1] = colors[1][7];
-                tempColors[5][2] = colors[1][8];
+                tempColors[3][6] = colors[1][8];
+                tempColors[3][7] = colors[1][5];
+                tempColors[3][8] = colors[1][2];
 
-                tempColors[1][8] = colors[3][2];
-                tempColors[1][7] = colors[3][1];
-                tempColors[1][6] = colors[3][2];
+                tempColors[1][8] = colors[0][2];
+                tempColors[1][5] = colors[0][1];
+                tempColors[1][2] = colors[0][0];
 
-                tempColors[3][0] = colors[0][0];
-                tempColors[3][1] = colors[0][1];
-                tempColors[3][2] = colors[0][2];
+                tempColors[0][2] = colors[4][0];
+                tempColors[0][1] = colors[4][3];
+                tempColors[0][0] = colors[4][6];
                 break;
         }
     }
-    
-    
 
 }

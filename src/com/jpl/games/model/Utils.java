@@ -197,6 +197,7 @@ public class Utils {
 
     public static int getCenter(String face) {
         int c = 0;
+        System.out.println("face: "+face);
         switch (face.substring(0, 1)) {
             case "L":
                 c = 12;

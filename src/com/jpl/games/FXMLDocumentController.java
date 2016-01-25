@@ -9,6 +9,7 @@ import com.rubii.objects.ConfiguracionGlobal;
 import com.rubii.remote.server.RemoteMinion;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -131,9 +132,9 @@ public class FXMLDocumentController implements Initializable {
             service = (RemoteMinion) registry.lookup("Minion");
             System.out.println("Conectado!");
 
-        } catch (RemoteException ex) {
-            Logger.getLogger(RubikFX.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
+        } catch (ConnectException ex){
+            System.err.println("Servidor no encontrado, iniciando en modo fuera de linea...");
+        } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(RubikFX.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

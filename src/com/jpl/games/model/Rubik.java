@@ -182,7 +182,7 @@ public class Rubik {
         System.out.println((bPreview?(bCancel?"Cancelling: ":"Simulating: "):"Rotating: ")+btRot);
         boolean bFaceArrow= !(btRot.startsWith("X")||btRot.startsWith("Y")||btRot.startsWith("Z"));
         
-        if(bPreview || onScrambling.get() || onReplaying.get() || secondRotation){
+        if(bPreview || onScrambling.get() || onReplaying.get() || onSolving.get() || secondRotation){
             // rotate cube indexes
             rot.turn(btRot);
             // get new indexes in terms of blocks numbers from original order
@@ -204,7 +204,7 @@ public class Rubik {
             axis=Utils.getAxis(btRot); 
         }
         // define rotation
-        double angIni=(bPreview || onScrambling.get() || onReplaying.get() || secondRotation?0d:5d)*(btRot.endsWith("i")?1d:-1d);
+        double angIni=(bPreview || onScrambling.get() || onReplaying.get() || onSolving.get()|| secondRotation?0d:5d)*(btRot.endsWith("i")?1d:-1d);
         double angEnd=(bPreview?5d:90d)*(btRot.endsWith("i")?1d:-1d);
         
         rotation.set(angIni);
@@ -213,7 +213,7 @@ public class Rubik {
         // create animation
         Timeline timeline=new Timeline();
         timeline.getKeyFrames().add(
-            new KeyFrame(Duration.millis(onScrambling.get() || onReplaying.get()?200:(bPreview?100:600)), e->{
+            new KeyFrame(Duration.millis(onScrambling.get() || onReplaying.get() || onSolving.get()?200:(bPreview?100:600)), e->{
                     rotation.removeListener(rotMap);
                     secondRotation=false;
                     if(bPreview){
@@ -227,7 +227,7 @@ public class Rubik {
                         } else {
                             previewFace.set(btRot);
                         }
-                    } else if(!(onScrambling.get() || onReplaying.get())){ // complete rotation
+                    } else if(!(onScrambling.get() || onReplaying.get() || onSolving.get())){ // complete rotation
                         mouse.set(MOUSE_OUT);
                         previewFace.set("V");
                         if(!hoveredOnClick.get()){ 
@@ -243,12 +243,12 @@ public class Rubik {
                 },  new KeyValue(rotation,angEnd)));
         timeline.playFromStart();
 
-        if(bPreview || onScrambling.get() || onReplaying.get() || secondRotation){
+        if(bPreview || onScrambling.get() || onSolving.get() || onReplaying.get() || secondRotation){
             // update order with last list, to start all over again in the next rotation
             order=reorder.stream().collect(Collectors.toList());
         } 
         // count only face rotations not cube rotations
-        if(!bPreview && !onScrambling.get() && bFaceArrow){
+        if(!bPreview && !onScrambling.get() && bFaceArrow && !onSolving.get()){
             count.set(count.get()+1);
             // check if solved
             colors = rot.getColors();
@@ -384,6 +384,15 @@ public class Rubik {
     }
     
     public void doSolve(){
+        int[][] cubee = rot.getCubee();
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 9; j++) {
+                System.out.print(cubee[i][j]+ "  ");
+                if((j+1)%3 == 0)
+                    System.out.print("\n");
+            }
+            System.out.println("-----------------------\n");
+        }
         StringBuffer s = new StringBuffer(54);
         
         
@@ -409,7 +418,7 @@ public class Rubik {
             }
         
         String cubeString = s.toString();
-        JOptionPane.showMessageDialog(null, "Cube Definiton String: " + cubeString);
+        System.out.println("Cube Definiton String: " + cubeString);
         long t = System.nanoTime();
         String result = search.solution(cubeString, 21, 100, 0, 0);;
         long n_probe = search.numberOfProbes();
@@ -450,7 +459,12 @@ public class Rubik {
             }
             JOptionPane.showMessageDialog(null, result, Double.toString((t / 1000) / 1000.0) + " ms | " + n_probe + " probes", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            System.out.println(result);
+            System.out.println("resultado... " +result);
+            result = result.replaceAll("\\s+"," ");
+            System.out.println("lorem  ipsum   dolor \n sit.".replaceAll("\\s+", " "));
+            
+            System.out.println("Valid solution: "+result);
+            doResolveSequence(result.trim());
         }
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
@@ -461,7 +475,7 @@ public class Rubik {
 
     
     public void doResolveSequence(String list){
-        
+        System.out.println("List of solution movements: "+list);
         onSolving.set(true);
         sequence=Utils.unifyNotation(list);
         
@@ -497,6 +511,7 @@ public class Rubik {
     }
     
     public void doSequence(String list){
+        
         onScrambling.set(true);
         sequence=Utils.unifyNotation(list);
         
