@@ -68,6 +68,8 @@ public class RubikFX extends Application {
     private final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault());
 
     private Button btnHover;
+    
+    private long scrambleTime;
 
     private Moves moves = new Moves();
 
@@ -135,9 +137,14 @@ public class RubikFX extends Application {
         bReset.setDisable(true);
         bReset.setOnAction(e -> {
             if (moves.getNumMoves() > 0) {
-
+                if(!config.multijugador ){
                 moves.getMoves().clear();
                 rubik.doReset();
+                }else{
+                    moves.getMoves().clear();
+                    rubik.doReset();
+                    //doScramble(conf, null)
+            }
             }
         });
         ChangeListener<Number> clockLis = (ov, l, l1) -> clock.set(LocalTime.ofNanoOfDay(l1.longValue()).format(fmt));
@@ -185,6 +192,9 @@ public class RubikFX extends Application {
         });
         Label lSolved = new Label("Solved");
         lSolved.setVisible(false);
+        Label lReto = new Label("Reto #");
+        lReto.setVisible(true);
+        lReto.setTextFill(Color.WHITE);
         Label lSimulated = new Label();
         lSimulated.textProperty().bind(rubik.getPreviewFace());
 
@@ -211,27 +221,13 @@ public class RubikFX extends Application {
         bSolve.setStyle("-fx-text-fill: white; -fx-font-family: \"Helvetica\";");
         bSolve.setDisable(true);
         bSolve.setOnAction(e -> {
+            if (config.multijugador) {
+                config.desistir = true;
+            }
+            timer.stop();
             doSolve();
 
         });
-
-        if (!config.multijugador) {
-
-            tbTop.getItems().addAll(new Separator(), bReset, bSc, bReplay, bSeq, lSolved,
-                    new Separator(), bSolve, new Separator(), lSimulated);
-
-        } else {
-
-            tbTop.getItems().addAll(new Separator(), bReset, bReplay, bSeq, lSolved,
-                    new Separator(), new Separator(), lSimulated);
-            
-            try {
-                rubik.doSequence(service.getReto(1));
-            } catch (RemoteException ex) {
-                JOptionPane.showMessageDialog(null, "Error de conexion con el servidor maestro");
-            }
-
-        }
         pane.setTop(tbTop);
 
         //Panel de abajo
@@ -265,11 +261,12 @@ public class RubikFX extends Application {
         rubik.getCount().addListener((ov, v, v1) -> {
             bReset.setDisable(moves.getNumMoves() == 0);
             bReplay.setDisable(moves.getNumMoves() == 0);
-            if (!config.multijugador) {
-                bSolve.setDisable(moves.getNumMoves() == 0);
-            }
+            // if (!config.multijugador) {
+            bSolve.setDisable(moves.getNumMoves() == 0);
+            //}
             lMov.setText("Movements: " + (v1.intValue() + 1));
         });
+        lMov.setTextFill(Color.WHITE);
         rubik.getLastRotation().addListener((ov, v, v1) -> {
             if (!rubik.isOnReplaying().get() && !v1.isEmpty()) {
                 moves.addMove(new Move(v1, LocalTime.now().minusNanos(time.toNanoOfDay()).toNanoOfDay()));
@@ -280,6 +277,7 @@ public class RubikFX extends Application {
         lTime.textProperty().bind(clock);
         tbBottom.getItems().addAll(new Separator(), lMov, new Separator(), lTime);
         pane.setBottom(tbBottom);
+        lTime.setTextFill(Color.WHITE);
         tbBottom.prefWidthProperty().bind(pane.heightProperty());
 
         //Panel derecho
@@ -332,7 +330,7 @@ public class RubikFX extends Application {
         pane.setCenter(rubik.getSubScene());
 
         // PONER FONDO AL CUBO
-        pane.setStyle("-fx-background-image: url(\"/imagenes/fondo-vectorial12.jpg\");-fx-background-size: 1500, 1000;-fx-background-repeat: no-repeat;");
+        pane.setStyle("-fx-background-image: url(\"/imagenes/fondo-vectorial12.jpg\");-fx-background-size: cover;-fx-background-repeat: no-repeat;");
 //******************************
         pane.getChildren().stream()
                 .filter(withToolbars())
@@ -387,22 +385,27 @@ public class RubikFX extends Application {
             if (b1) {
                 lSolved.setTextFill(Color.WHITE);
                 lSolved.setVisible(true);
-                timer.stop();
-                moves.setTimePlay(LocalTime.now().minusNanos(time.toNanoOfDay()).toNanoOfDay());
-                JOptionPane.showMessageDialog(null, moves);
-                if (config.multijugador) {
+
+                System.out.println("Solved!");
+                pane.getChildren().stream().filter(withToolbars()).forEach(setDisable(false));
+                if (config.multijugador && !config.desistir) {
+                //if (config.multijugador) {
+                    timer.stop();
+                    moves.setTimePlay(LocalTime.now().minusNanos(time.toNanoOfDay()).minusNanos(scrambleTime).plusSeconds(1).toNanoOfDay());
                     Puntuacion p = new Puntuacion(moves.getTimePlay(), JOptionPane.showInputDialog(null, "Nombre de jugador: "));
                     System.out.println(p);
+
+                    p.setReto(config.reto);
                     try {
                         LinkedList<Puntuacion> tablero = service.guardarPuntuacion(p, config.reto);
-                        System.out.println(tablero);
+
+                        System.out.println("tablero: " + tablero);
 
                         try {
-
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Leaderboard.fxml"));
-                            Parent root = (Parent)fxmlLoader.load(); 
+                            Parent root = (Parent) fxmlLoader.load();
                             LeaderboardController controller = fxmlLoader.<LeaderboardController>getController();
-                           controller.load(tablero,service);
+                            controller.load(tablero, service);
                             Scene scnInstruc = new Scene(root);
                             Stage stage1 = new Stage();
                             stage1.setScene(scnInstruc);
@@ -439,6 +442,29 @@ public class RubikFX extends Application {
         stage.setScene(scene);
         stage.getIcons().add(new Image("/imagenes/icono.png"));
         stage.show();
+
+        if (!config.multijugador) {
+
+            tbTop.getItems().addAll(new Separator(), bReset, bSc, bReplay, bSeq, lSolved,
+                    new Separator(), bSolve, new Separator(), lSimulated);
+
+        } else {
+            System.out.println("CHALLENGE!!!");
+            bSolve.setText("Desistir");
+            tbTop.getItems().addAll(new Separator(), bReset, bReplay, bSeq, lSolved,
+                    new Separator(), bSolve, lReto, new Separator(), lSimulated);
+
+            try {
+
+                config.reto = ThreadLocalRandom.current().nextInt(0, 100);
+                System.out.println("Reto: " + service.getReto(config.reto));
+                doScramble(service.getReto(config.reto), lSolved);
+                lReto.setText("Reto #" + (config.reto + 1));
+            } catch (RemoteException ex) {
+                JOptionPane.showMessageDialog(null, "Error de conexion con el servidor maestro");
+            }
+
+        }
     }
 
     // called on button click
@@ -473,6 +499,29 @@ public class RubikFX extends Application {
         });
     }
 
+    // called from button Scramble
+    private void doScramble(String movements, Label lSolved) {
+        pane.getChildren().stream().filter(withToolbars()).forEach(setDisable(true));
+        rubik.doSequence(movements);
+        rubik.isOnScrambling().addListener((ov, v, v1) -> {
+            if (v && !v1) {
+                System.out.println("scrambled!");
+                scrambleTime = LocalTime.now().minusNanos(time.toNanoOfDay()).toNanoOfDay();
+                pane.getChildren().stream().filter(withToolbars()).forEach(setDisable(false));
+                moves = new Moves();
+                time = LocalTime.now();
+
+                timer = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+                    clock.set(LocalTime.now().minusNanos(time.toNanoOfDay()).format(fmt));
+                }), new KeyFrame(Duration.seconds(1)));
+                timer.setCycleCount(Animation.INDEFINITE);
+                timer.playFromStart();
+                
+            }
+        });
+
+    }
+
     //called from button Solve
     private void doSolve() {
         pane.getChildren().stream().filter(withToolbars()).forEach(setDisable(true));
@@ -481,7 +530,6 @@ public class RubikFX extends Application {
             if (v && !v1) {
                 System.out.println("Solved!");
                 pane.getChildren().stream().filter(withToolbars()).forEach(setDisable(false));
-
             }
         });
 

@@ -39,7 +39,10 @@ public class GameModesController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
-                RubikFX rfx = new RubikFX(new ConfiguracionGlobal(), FXMLDocumentController.service);
+                
+                ConfiguracionGlobal config = FXMLDocumentController.config;
+                config.multijugador = false;
+                RubikFX rfx = new RubikFX(config, FXMLDocumentController.service);
                 rfx.start(new Stage());
             }
         });
@@ -58,20 +61,9 @@ public class GameModesController implements Initializable {
 //timeline.setAutoReverse(true); 
 //timeline.getKeyFrames().addAll(keyFrame); 
 //timeline.play();
-                ConfiguracionGlobal config = new ConfiguracionGlobal();
+                ConfiguracionGlobal config = FXMLDocumentController.config;
                 config.multijugador = true;
-                try {
-                    String ip = JOptionPane.showInputDialog(null, "ip");
-                    if (ip.contains(":")) {
-                        config.ip = ip.split(":")[0];
-                        config.PORT = Integer.parseInt(ip.split(":")[1]);
-                    } else {
-                        config.ip = ip;
-                    }
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Puerto no valido, usando puerto por defecto (199)");
-                }
-                RubikFX rfx = new RubikFX(FXMLDocumentController.config,FXMLDocumentController.service);
+                RubikFX rfx = new RubikFX(config,FXMLDocumentController.service);
                 rfx.start(new Stage());
             }
         });

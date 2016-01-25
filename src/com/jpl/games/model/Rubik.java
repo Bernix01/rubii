@@ -502,6 +502,7 @@ public class Rubik {
         index.addListener((ov,v,v1)->{
             if(v1.intValue()==sequence.size()+1){
                 onSolving.set(false);
+                solved.set(true);
                 onRotation.removeListener(lis);
                 count.set(-1);
             }

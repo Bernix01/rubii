@@ -90,7 +90,7 @@ public class LeaderboardController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    tablero = service.getTablero(Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el reto")));
+                    tablero = service.getTablero(Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el reto"))-1);
                     if(tablero == null || tablero.isEmpty())
                         JOptionPane.showMessageDialog(null, "No se encontraron resultados");
                     refrescarLista();
@@ -104,6 +104,7 @@ public class LeaderboardController implements Initializable {
     public void load(LinkedList<Puntuacion> tablero, RemoteMinion service) {
         this.tablero = tablero;
         this.service = service;
+        
         refrescarLista();
     }
 

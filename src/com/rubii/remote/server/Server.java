@@ -10,6 +10,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -18,6 +20,8 @@ import java.rmi.registry.Registry;
 public class Server {
     private static final int PORT = 199;
     private static Registry registry;
+        public static final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault());
+
     
     public static void startRegisstry() throws RemoteException{
         registry = LocateRegistry.createRegistry(PORT);

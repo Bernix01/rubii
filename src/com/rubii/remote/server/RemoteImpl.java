@@ -41,7 +41,7 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteMinion {
         super();
         puntuaciones = new HashMap<>();
         LinkedList<Puntuacion> tmp;
-        for (int i = 1; i < 101; i++) {
+        for (int i = 0; i < 100; i++) {
             tmp = new LinkedList<>();
             puntuaciones.put(i, tmp);
         }
@@ -67,12 +67,13 @@ public class RemoteImpl extends UnicastRemoteObject implements RemoteMinion {
 
     @Override
     public LinkedList<Puntuacion> guardarPuntuacion(Puntuacion p, int reto) throws RemoteException {
-        if (reto >= 100 || reto <= 1) {
+        if (reto >= 100 || reto < 0) {
             //TODO lanzar exception
             System.out.println("Puntacion " + p + " no guardada, reto invalido.");
             return null;
         }
         puntuaciones.get(reto).add(p);
+        System.out.println("puntuacion a guardar: \n"+p+ "\n  del reto: "+ reto);
         if (System.currentTimeMillis() - ultimaSincronizacion > 900000 || jugadores < 5) {
             sincronizar();
         }

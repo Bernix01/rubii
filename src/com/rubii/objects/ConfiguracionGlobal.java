@@ -18,6 +18,7 @@ public class ConfiguracionGlobal {
     
     public int PORT = 199;
     
+    public boolean desistir = false;
     public String ip = "localhost";
     public int reto = 1;
     
