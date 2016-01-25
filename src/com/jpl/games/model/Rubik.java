@@ -1,7 +1,9 @@
 package com.jpl.games.model;
 
 import com.jpl.games.math.Rotations;
+import com.jpl.games.math.Search;
 import com.jpl.games.model3d.Model3D;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +44,7 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.util.Duration;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -63,7 +66,7 @@ public class Rubik {
     private final Map<String,Transform> mapTransformsOriginal=new HashMap<>();
     
     private final List<Integer> orderOriginal;
-    private List<Integer> order;
+    private List<Integer> order, colors;
     private List<Integer> reorder, layer, orderScramble;
     private List<String> sequence=new ArrayList<>();
     
@@ -101,6 +104,8 @@ public class Rubik {
     private static final int MOUSE_RELEASED=3;
     private final IntegerProperty mouse=new SimpleIntegerProperty(MOUSE_OUT);
     private BooleanProperty onSolving = new SimpleBooleanProperty(false);
+    
+    Search search = new Search();
     
     public Rubik(){
         /*
@@ -246,7 +251,8 @@ public class Rubik {
         if(!bPreview && !onScrambling.get() && bFaceArrow){
             count.set(count.get()+1);
             // check if solved
-            solved.set(Utils.checkSolution(order));
+            colors = rot.getColors();
+            solved.set(Utils.checkSolution(order,colors));
         }
     }
 
@@ -378,24 +384,81 @@ public class Rubik {
     }
     
     public void doSolve(){
-        StringBuilder sb=new StringBuilder();
-        final List<String> movements = Utils.getMovements();
-        IntStream.range(0, 25).boxed().forEach(i->{
-            while(last.substring(0, 1).equals(get.substring(0, 1))){
-                // avoid repeating the same/opposite rotations
-                get=movements.get((int)(Math.floor(Math.random()*movements.size())));
+        StringBuffer s = new StringBuffer(54);
+        
+        
+        for (int i = 0; i < 54; i++)
+            s.insert(i, 'B');// default initialization
+        int[][] facelet = rot.getCubee();
+        
+        for (int i = 0; i < 6; i++)
+            // read the 54 facelets
+            for (int j = 0; j < 9; j++) {
+                if (facelet[i][j] == facelet[0][4])
+                    s.setCharAt(9 * i + j, 'U');
+                if (facelet[i][j] == facelet[1][4])
+                    s.setCharAt(9 * i + j, 'R');
+                if (facelet[i][j] == facelet[2][4])
+                    s.setCharAt(9 * i + j, 'F');
+                if (facelet[i][j] == facelet[3][4])
+                    s.setCharAt(9 * i + j, 'D');
+                if (facelet[i][j] == facelet[4][4])
+                    s.setCharAt(9 * i + j, 'L');
+                if (facelet[i][j] == facelet[5][4])
+                    s.setCharAt(9 * i + j, 'B');
             }
-            last=get;
-            if(get.contains("2")){
-                get=get.substring(0,1);
-                sb.append(get).append(" ");
-            }
-            sb.append(get).append(" ");
-        });
+        
+        String cubeString = s.toString();
+        JOptionPane.showMessageDialog(null, "Cube Definiton String: " + cubeString);
+        long t = System.nanoTime();
+        String result = search.solution(cubeString, 21, 100, 0, 0);;
+        long n_probe = search.numberOfProbes();
+        // ++++++++++++++++++++++++ Call Search.solution method from package org.kociemba.twophase ++++++++++++++++++++++++
+        while (result.startsWith("Error 8") && ((System.nanoTime() - t) < 5 * 1.0e9)) {
+            result = search.next(100, 0, 0);
+            n_probe += search.numberOfProbes();
+        }
+        t = System.nanoTime() - t;
 
-        System.out.println("sb: "+sb.toString());
-        doResolveSequence(sb.toString().trim());
+        // +++++++++++++++++++ Replace the error messages with more meaningful ones in your language ++++++++++++++++++++++
+        if (result.contains("Error")) {
+            switch (result.charAt(result.length() - 1)) {
+            case '1':
+                result = "There are not exactly nine facelets of each color!";
+                break;
+            case '2':
+                result = "Not all 12 edges exist exactly once!";
+                break;
+            case '3':
+                result = "Flip error: One edge has to be flipped!";
+                break;
+            case '4':
+                result = "Not all 8 corners exist exactly once!";
+                break;
+            case '5':
+                result = "Twist error: One corner has to be twisted!";
+                break;
+            case '6':
+                result = "Parity error: Two corners or two edges have to be exchanged!";
+                break;
+            case '7':
+                result = "No solution exists for the given maximum move number!";
+                break;
+            case '8':
+                result = "Timeout, no solution found within given maximum time!";
+                break;
+            }
+            JOptionPane.showMessageDialog(null, result, Double.toString((t / 1000) / 1000.0) + " ms | " + n_probe + " probes", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            System.out.println(result);
+        }
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
+//
+//        System.out.println("sb: "+sb.toString());
+//        doResolveSequence(sb.toString().trim());
     }
+
     
     public void doResolveSequence(String list){
         
