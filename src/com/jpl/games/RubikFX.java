@@ -455,7 +455,6 @@ public class RubikFX extends Application {
                     new Separator(), bSolve, lReto, new Separator(), lSimulated);
 
             try {
-
                 config.reto = ThreadLocalRandom.current().nextInt(0, 100);
                 System.out.println("Reto: " + service.getReto(config.reto));
                 doScramble(service.getReto(config.reto), lSolved);
