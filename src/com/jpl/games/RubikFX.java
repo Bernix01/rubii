@@ -445,13 +445,13 @@ public class RubikFX extends Application {
 
         if (!config.multijugador) {
 
-            tbTop.getItems().addAll(new Separator(), bReset, bSc, bReplay, bSeq, lSolved,
+            tbTop.getItems().addAll(new Separator(), bReset, bSc, bSeq, lSolved,
                     new Separator(), bSolve, new Separator(), lSimulated);
 
         } else {
             System.out.println("CHALLENGE!!!");
             bSolve.setText("Desistir");
-            tbTop.getItems().addAll(new Separator(), bReset, bReplay, bSeq, lSolved,
+            tbTop.getItems().addAll(new Separator(), bReset, bSeq, lSolved,
                     new Separator(), bSolve, lReto, new Separator(), lSimulated);
 
             try {
